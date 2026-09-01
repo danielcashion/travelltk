@@ -22,7 +22,7 @@ export function AccountMenu() {
 
   if (!session?.user) {
     return (
-      <Button asChild variant="outline" size="sm">
+      <Button asChild variant="outline" size="sm" className="h-9 px-4 tracking-[0.08em] uppercase">
         <Link href="/login">Sign in</Link>
       </Button>
     );

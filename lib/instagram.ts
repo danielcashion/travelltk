@@ -5,9 +5,6 @@ export const FEATURED_INSTAGRAM_HANDLE = "eileengu";
 export const FEATURED_INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${FEATURED_INSTAGRAM_HANDLE}/`;
 export const FEATURED_INSTAGRAM_EMBED_URL = `https://www.instagram.com/${FEATURED_INSTAGRAM_HANDLE}/embed/`;
 
-/** Quiet alpine luxury — Eileen Gu's world, not a desert highway. */
-export const EILEEN_HERO_IMAGE_ID = "photo-1470770841072-f978cf4d019e";
-
 export interface InstagramPost {
   permalink: string;
   caption: string | null;
@@ -33,7 +30,8 @@ export const FEATURED_CREATORS = [
     name: "Eileen Gu",
     handle: "eileengu",
     tagline: "Olympic alpine. Couture fittings. The itinerary after the podium.",
-    moodImageId: "photo-1605540436563-5bca919ae766",
+    /** Instagram media id from @eileengu post DcGjfDDGChA (img_index=1). */
+    moodImageId: "3965012587151108160_396557061",
   },
   {
     name: "Leonie Hanne",
@@ -52,6 +50,14 @@ export const FEATURED_CREATORS = [
     handle: "camilacoelho",
     tagline: "Warm-weather suites and the beauty case that travels with them.",
     moodImageId: "photo-1540541338287-41700207dee6",
+  },
+  {
+    name: "Christine Drinan",
+    handle: "galavantingchristine",
+    tagline:
+      "Luxury Hotels, Foodie, Travel Show Host & Founder of Galavante, sharing the world.",
+    /** Instagram media id from @galavantingchristine reel DcuHF4iBvJF (Hotel 1 Place Vendôme). */
+    moodImageId: "3976146711638110789_11155897",
   },
   {
     name: "Negin Mirsalehi",
@@ -91,6 +97,13 @@ let discoveryWarned = false;
 
 function profileUrl(handle: string): string {
   return `https://www.instagram.com/${handle}/`;
+}
+
+function creatorMoodImageUrl(moodImageId: string): string {
+  if (moodImageId.startsWith("photo-")) {
+    return unsplash(moodImageId);
+  }
+  return `/images/creators/${moodImageId}.jpg`;
 }
 
 function mapPost(
@@ -182,7 +195,7 @@ export async function getFeaturedCreators(): Promise<FeaturedCreator[]> {
     handle: creator.handle,
     tagline: creator.tagline,
     profileUrl: profileUrl(creator.handle),
-    moodImageUrl: unsplash(creator.moodImageId),
+    moodImageUrl: creatorMoodImageUrl(creator.moodImageId),
     latestPost: discovered[index]?.latestPost ?? null,
     profilePictureUrl: discovered[index]?.profilePictureUrl ?? null,
     followersCount: discovered[index]?.followersCount ?? null,

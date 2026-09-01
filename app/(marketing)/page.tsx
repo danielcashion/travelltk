@@ -5,6 +5,7 @@ import { CreatorCarousel } from "@/components/marketing/creator-carousel";
 import { HomeHero } from "@/components/marketing/home-hero";
 import { HomeValueProps } from "@/components/marketing/home-value-props";
 import { PageContainer } from "@/components/marketing/page-container";
+import { SectionHeading } from "@/components/marketing/section-heading";
 import { Button } from "@/components/ui/button";
 import { TripGrid } from "@/components/trip/trip-grid";
 import { getFeaturedCreators, getHeroCreator } from "@/lib/instagram";
@@ -29,10 +30,14 @@ export default async function HomePage() {
       <HomeHero creator={heroCreator} />
       <ClientErrorBoundary
         fallback={
-          <section className="bg-neutral-900 py-16 text-neutral-50">
+          <section className="bg-neutral-900 py-12 text-neutral-50">
             <PageContainer>
-              <h2 className="font-display text-3xl">The creators we travel with</h2>
-              <p className="mt-3 text-neutral-300">Open Instagram from Explore, then book the route on TravelLTK.</p>
+              <SectionHeading
+                tone="dark"
+                eyebrow="On Instagram"
+                title="The creators we travel with"
+                description="Open Instagram from Explore, then book the route on TravelLTK."
+              />
             </PageContainer>
           </section>
         }
@@ -40,40 +45,39 @@ export default async function HomePage() {
         <CreatorCarousel creators={creators} />
       </ClientErrorBoundary>
 
-      <section className="py-16">
+      <section className="py-16 md:py-20">
         <PageContainer>
-          <h2 className="font-display text-3xl">Why TravelLTK</h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Screenshots of someone else&apos;s Google Map are not a plan. These trips
-            already have the nights, the transfers, and a price.
-          </p>
+          <SectionHeading
+            eyebrow="The difference"
+            title="Why TravelLTK"
+            description="Screenshots of someone else's Google Map are not a plan. These trips already have the nights, the transfers, and a price."
+          />
           <HomeValueProps />
         </PageContainer>
       </section>
 
-      <section className="bg-surface-sunken py-16">
+      <section className="bg-surface-sunken py-16 md:py-20">
         <PageContainer>
           <div className="flex items-end justify-between gap-4">
-            <div>
-              <h2 className="font-display text-3xl">Trips travelers are booking</h2>
-              <p className="mt-2 text-muted-foreground">
-                Live-looking inventory from published creators. New routes land every week.
-              </p>
-            </div>
-            <Button asChild variant="ghost" className="hidden sm:inline-flex">
+            <SectionHeading
+              eyebrow="This week"
+              title="Trips travelers are booking"
+              description="Live inventory from published creators. New routes land every week."
+            />
+            <Button asChild variant="ghost" className="hidden tracking-[0.12em] uppercase sm:inline-flex">
               <Link href="/explore">See all</Link>
             </Button>
           </div>
-          <div className="mt-8">
+          <div className="mt-10">
             <TripGrid trips={featured} />
           </div>
         </PageContainer>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 md:py-20">
         <PageContainer>
-          <h2 className="font-display text-3xl">Browse by kind of trip</h2>
-          <div className="mt-8 grid gap-3 grid-cols-2 sm:grid-cols-4">
+          <SectionHeading eyebrow="By temperament" title="Browse by kind of trip" />
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {TRIP_CATEGORIES.map((category) => (
               <CategoryTile key={category.slug} slug={category.slug} label={category.label} />
             ))}
@@ -81,15 +85,15 @@ export default async function HomePage() {
         </PageContainer>
       </section>
 
-      <section className="border-t border-border bg-primary py-16 text-primary-foreground">
-        <PageContainer className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-3xl">Ready to travel someone&apos;s exact route?</h2>
-            <p className="mt-2 max-w-xl text-primary-foreground/80">
-              Filter by destination, duration, and price. Save trips. Book a leg or the
-              whole itinerary.
-            </p>
-          </div>
+      <section className="bg-neutral-900 py-16 text-neutral-50 md:py-20">
+        <PageContainer className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:justify-between">
+          <SectionHeading
+            tone="dark"
+            className="max-w-xl"
+            eyebrow="Private inventory"
+            title="Ready to travel someone's exact route?"
+            description="Filter by destination, duration, and price. Save trips. Book a leg or the whole itinerary."
+          />
           <Button asChild size="lg" variant="secondary">
             <Link href="/explore">Explore trips</Link>
           </Button>

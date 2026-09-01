@@ -17,13 +17,15 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="text-sm font-semibold text-foreground">{title}</p>
-      <ul className="mt-3 space-y-2">
+      <p className="text-[0.7rem] font-medium tracking-[0.2em] text-secondary uppercase">
+        {title}
+      </p>
+      <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm text-neutral-300 transition-colors hover:text-neutral-50"
             >
               {link.label}
             </Link>
@@ -36,15 +38,15 @@ function FooterColumn({
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-surface-sunken">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-5">
+    <footer className="mt-auto bg-neutral-900 text-neutral-50">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
           <Link href="/" aria-label="TravelLTK home" className="inline-flex">
-            <LogoWordmark alt="" className="h-9" />
+            <LogoWordmark variant="onDark" alt="" className="h-9" />
           </Link>
-          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-            Creator itineraries, bookable as a trip or as individual legs. Payouts go to
-            the person who actually took the route.
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-300">
+            Private itineraries from the people whose trips you already follow.
+            Book the route — or a single leg — with the person who actually took it.
           </p>
         </div>
         <FooterColumn title="Follow Us" links={SOCIAL_LINKS} />
@@ -52,8 +54,8 @@ export function Footer() {
         <FooterColumn title="Legal" links={FOOTER_LEGAL} />
         <FooterColumn title="Support" links={FOOTER_SUPPORT} />
       </div>
-      <div className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs tracking-wide text-neutral-400 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>

@@ -43,7 +43,10 @@ export default async function ExplorePage({
   return (
     <main className="py-10">
       <PageContainer>
-        <h1 className="font-display text-4xl">Explore trips</h1>
+        <p className="text-xs font-medium tracking-[0.22em] text-secondary uppercase">
+          The collection
+        </p>
+        <h1 className="mt-2 font-display text-4xl tracking-tight">Explore trips</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Filter published creator itineraries by where they go, how long they run, and
           what they cost from. Book the whole trip or individual legs on the trip page.
