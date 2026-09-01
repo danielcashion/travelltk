@@ -41,6 +41,9 @@ yarn-error.log*
 .env*.local
 !.env.example
 
+# local application store (until DynamoDB)
+.data/
+
 # vercel
 .vercel
 

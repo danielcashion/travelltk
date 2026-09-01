@@ -7,21 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-type FormKind = "creator" | "partner" | "contact";
+type FormKind = "partner" | "contact";
 
 const FIELDS: Record<
   FormKind,
   { name: string; label: string; type?: string; textarea?: boolean; required?: boolean }[]
 > = {
-  creator: [
-    { name: "name", label: "Full name", required: true },
-    { name: "email", label: "Email", type: "email", required: true },
-    { name: "instagram", label: "Instagram handle" },
-    { name: "tiktok", label: "TikTok handle" },
-    { name: "youtube", label: "YouTube channel" },
-    { name: "followers", label: "Combined follower count", type: "number", required: true },
-    { name: "sample", label: "Sample content links", textarea: true, required: true },
-  ],
   partner: [
     { name: "name", label: "Contact name", required: true },
     { name: "email", label: "Work email", type: "email", required: true },
@@ -38,7 +29,6 @@ const FIELDS: Record<
 };
 
 const ENDPOINTS: Record<FormKind, string> = {
-  creator: "/api/applications/creators",
   partner: "/api/applications/partners",
   contact: "/api/contact",
 };

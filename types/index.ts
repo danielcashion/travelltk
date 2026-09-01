@@ -191,3 +191,10 @@ export const LEG_TYPES: { slug: LegType; label: string }[] = [
   { slug: "restaurant", label: "Restaurant" },
   { slug: "transport", label: "Transport" },
 ];
+
+export type {
+  CreatorApplication,
+  CreatorApplicationStatus,
+  InstagramVerificationStatus,
+  PublicCreatorApplication,
+} from "./applications";

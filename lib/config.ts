@@ -49,6 +49,27 @@ const envSchema = z.object({
    */
   INSTAGRAM_ACCESS_TOKEN: optionalString,
   INSTAGRAM_BUSINESS_ACCOUNT_ID: optionalString,
+
+  /**
+   * Instagram Login (creator onboarding OAuth). Distinct from the Graph token
+   * used for homepage Business Discovery. Creators do not need a Facebook Page.
+   */
+  INSTAGRAM_APP_ID: optionalString,
+  INSTAGRAM_APP_SECRET: optionalString,
+  INSTAGRAM_REDIRECT_URI: optionalUrl,
+  MIN_FOLLOWER_COUNT: z.preprocess((value) => {
+    if (value === "" || value === undefined || value === null) return 400_000;
+    return value;
+  }, z.coerce.number().int().positive()),
+
+  /** AES-256-GCM key for Instagram long-lived tokens at rest. 64-char hex or any passphrase. */
+  TOKEN_ENCRYPTION_KEY: optionalString,
+
+  /** Comma-separated emails allowed to manually verify creator applications. */
+  ADMIN_EMAILS: optionalString,
+
+  /** Shared secret for Vercel cron → /api/cron/refresh-instagram-tokens. */
+  CRON_SECRET: optionalString,
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -74,6 +95,13 @@ function loadEnv(): Env {
     STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID,
     INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN,
     INSTAGRAM_BUSINESS_ACCOUNT_ID: process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID,
+    INSTAGRAM_APP_ID: process.env.INSTAGRAM_APP_ID,
+    INSTAGRAM_APP_SECRET: process.env.INSTAGRAM_APP_SECRET,
+    INSTAGRAM_REDIRECT_URI: process.env.INSTAGRAM_REDIRECT_URI,
+    MIN_FOLLOWER_COUNT: process.env.MIN_FOLLOWER_COUNT,
+    TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY,
+    ADMIN_EMAILS: process.env.ADMIN_EMAILS,
+    CRON_SECRET: process.env.CRON_SECRET,
   });
 
   if (!parsed.success) {
@@ -148,3 +176,20 @@ export const isStripeConfigured = Boolean(
 export const isInstagramConfigured = Boolean(
   env.INSTAGRAM_ACCESS_TOKEN && env.INSTAGRAM_BUSINESS_ACCOUNT_ID,
 );
+export const isInstagramOAuthConfigured = Boolean(
+  env.INSTAGRAM_APP_ID && env.INSTAGRAM_APP_SECRET,
+);
+
+export function instagramRedirectUri(): string {
+  return (
+    env.INSTAGRAM_REDIRECT_URI ??
+    `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/api/instagram/callback`
+  );
+}
+
+export function adminEmails(): string[] {
+  return (env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}

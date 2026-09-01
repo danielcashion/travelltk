@@ -42,6 +42,12 @@ TravelLTK is two deployments. **AWS first**, then the Next.js app on Vercel, so 
    | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe Dashboard |
    | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
    | `STRIPE_CONNECT_CLIENT_ID` | Stripe Connect settings |
+   | `INSTAGRAM_APP_ID` / `INSTAGRAM_APP_SECRET` | Meta Developer App (Instagram Login) |
+   | `INSTAGRAM_REDIRECT_URI` | `https://YOUR_DOMAIN/api/instagram/callback` |
+   | `MIN_FOLLOWER_COUNT` | `400000` |
+   | `TOKEN_ENCRYPTION_KEY` | `openssl rand -hex 32` (token encryption at rest) |
+   | `ADMIN_EMAILS` | Comma-separated emails allowed to manually verify creators |
+   | `CRON_SECRET` | `openssl rand -hex 24` (Vercel Cron → token refresh) |
 
 8. Point the Stripe webhook at `https://YOUR_DOMAIN/api/webhooks/stripe`.
 9. Redeploy the Vercel project so it picks up env vars. Add the production callback URL to the Cognito app client if you used a preview URL in step 3.

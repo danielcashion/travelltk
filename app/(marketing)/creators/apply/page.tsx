@@ -1,5 +1,7 @@
+import { Suspense } from "react";
+import { CreatorApplyForm } from "@/components/marketing/creator-apply-form";
 import { PageContainer } from "@/components/marketing/page-container";
-import { LeadForm } from "@/components/marketing/lead-form";
+import { env, isInstagramOAuthConfigured } from "@/lib/config";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -49,7 +51,11 @@ export default function CreatorApplyPage() {
           <div className="mt-8 rounded-xl bg-surface-sunken p-4 text-sm text-muted-foreground">
             <p className="font-medium text-foreground">Requirements</p>
             <ul className="mt-2 list-disc space-y-1 pl-5">
-              <li>Public travel content (any platform) with a traceable audience</li>
+              <li>
+                Instagram Business or Creator account with at least{" "}
+                {env.MIN_FOLLOWER_COUNT.toLocaleString()} followers, verified by
+                Instagram Login (or a TikTok handle for manual review)
+              </li>
               <li>At least one complete trip you can document day by day</li>
               <li>Willingness to keep supplier names, nights, and prices honest</li>
               <li>A payout destination (Stripe Connect Express, set up in the studio)</li>
@@ -59,9 +65,15 @@ export default function CreatorApplyPage() {
         <div>
           <h2 className="font-display text-2xl">Apply</h2>
           <p className="mt-2 mb-4 text-sm text-muted-foreground">
-            We read every application. Typical response time is two weeks.
+            Connect Instagram to prove you own the account. Typical response time after
+            review is two weeks.
           </p>
-          <LeadForm kind="creator" />
+          <Suspense fallback={<p className="text-sm text-muted-foreground">Loading application…</p>}>
+            <CreatorApplyForm
+              minFollowerCount={env.MIN_FOLLOWER_COUNT}
+              oauthConfigured={isInstagramOAuthConfigured}
+            />
+          </Suspense>
         </div>
       </PageContainer>
     </main>

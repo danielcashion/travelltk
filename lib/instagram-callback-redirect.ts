@@ -1,0 +1,11 @@
+export function applyPageUrl(
+  origin: string,
+  params: Record<string, string | number | undefined | null>,
+): string {
+  const url = new URL("/creators/apply", origin);
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === "") continue;
+    url.searchParams.set(key, String(value));
+  }
+  return url.toString();
+}
