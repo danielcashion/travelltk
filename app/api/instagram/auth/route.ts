@@ -10,6 +10,9 @@ import { isInstagramOAuthConfigured } from "@/lib/config";
 import { getOAuthStateSecret } from "@/lib/token-encryption-key";
 import { applyPageUrl } from "@/lib/instagram-callback-redirect";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const applicationId = url.searchParams.get("applicationId")?.trim();
@@ -40,7 +43,7 @@ export async function GET(request: Request) {
   const response = NextResponse.redirect(instagramAuthorizeUrl(state));
   response.cookies.set(IG_OAUTH_COOKIE, cookieValue, {
     httpOnly: true,
-    secure: url.protocol === "https:",
+    secure: url.protocol === "https:" || Boolean(process.env.VERCEL),
     sameSite: "lax",
     maxAge: IG_OAUTH_TTL_SECONDS,
     path: "/",

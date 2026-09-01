@@ -4,3 +4,9 @@ export const IMAGE_BLUR_DATA_URL =
 export function unsplash(id: string, width = 1600): string {
   return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=80`;
 }
+
+/** Focal point for `object-cover`. Christine's DZ8cOYqh8Cg cover sits her at the bottom of a tall sky. */
+export function creatorCoverPositionClass(handle: string): string {
+  if (handle.toLowerCase() === "galavantingchristine") return "object-[center_bottom]";
+  return "object-center";
+}

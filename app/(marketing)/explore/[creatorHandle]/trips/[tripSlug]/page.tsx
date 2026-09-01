@@ -26,7 +26,7 @@ import {
   getTripBySlug,
 } from "@/lib/mock-data";
 import { PLATFORM_BOOKING_FEE_LABEL } from "@/lib/constants";
-import { tripPath } from "@/lib/paths";
+import { creatorPath, tripPath } from "@/lib/paths";
 import { pageMetadata, absUrl } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -130,7 +130,7 @@ export default async function TripDetailPage({
               <CreatorAvatarRow creator={creator} showFollowers />
               <p className="mt-3 text-sm text-muted-foreground">{creator.bio}</p>
               <Button asChild variant="outline" size="sm" className="mt-4">
-                <Link href={`/explore/${creator.handle}`}>View profile</Link>
+                <Link href={creatorPath(creator.handle)}>View profile</Link>
               </Button>
             </div>
           </section>

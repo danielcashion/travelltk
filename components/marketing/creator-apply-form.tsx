@@ -212,7 +212,16 @@ export function CreatorApplyForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4 rounded-xl border border-border bg-card p-6">
+    <form
+      onSubmit={onSubmit}
+      className="space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8"
+    >
+      <div>
+        <h3 className="font-display text-2xl">Application</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Identity first, then Instagram, then the trip you would publish.
+        </p>
+      </div>
       {banner ? (
         <Alert variant={banner.destructive ? "destructive" : "default"}>
           <AlertTitle>
@@ -246,6 +255,7 @@ export function CreatorApplyForm({
           required
           value={name}
           onChange={(event) => setName(event.target.value)}
+          className="h-11"
         />
       </div>
       <div className="space-y-2">
@@ -257,6 +267,7 @@ export function CreatorApplyForm({
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          className="h-11"
         />
       </div>
       <div className="space-y-2">
@@ -267,6 +278,7 @@ export function CreatorApplyForm({
           placeholder="@yourhandle"
           value={instagram}
           onChange={(event) => setInstagram(event.target.value)}
+          className="h-11"
         />
         <p className="text-xs text-muted-foreground">
           We will compare this to the account you connect. Mismatches are flagged for
@@ -274,9 +286,11 @@ export function CreatorApplyForm({
         </p>
       </div>
 
-      <div className="rounded-lg border border-border bg-surface-sunken p-3">
+      <div className="rounded-xl border border-border bg-surface-sunken p-4">
         <Button
           type="button"
+          size="lg"
+          className="h-11"
           onClick={onConnect}
           disabled={pending !== null || !oauthConfigured}
         >
@@ -304,6 +318,7 @@ export function CreatorApplyForm({
           placeholder="@yourhandle"
           value={tiktok}
           onChange={(event) => setTiktok(event.target.value)}
+          className="h-11"
         />
         <p className="text-xs text-muted-foreground">
           Stored as unverified until TikTok Login Kit is implemented. A reviewer will
@@ -318,6 +333,7 @@ export function CreatorApplyForm({
           name="youtube"
           value={youtube}
           onChange={(event) => setYoutube(event.target.value)}
+          className="h-11"
         />
       </div>
       <div className="space-y-2">
@@ -330,6 +346,7 @@ export function CreatorApplyForm({
           required
           value={followers}
           onChange={(event) => setFollowers(event.target.value)}
+          className="h-11"
         />
       </div>
       <div className="space-y-2">
@@ -341,9 +358,10 @@ export function CreatorApplyForm({
           rows={4}
           value={sample}
           onChange={(event) => setSample(event.target.value)}
+          className="min-h-28"
         />
       </div>
-      <Button type="submit" disabled={pending !== null}>
+      <Button type="submit" size="lg" className="h-11 w-full" disabled={pending !== null}>
         {pending === "submit" ? "Sending…" : "Submit application"}
       </Button>
     </form>

@@ -81,6 +81,16 @@ export interface TripDay {
   legs: TripLeg[];
 }
 
+export type VideoPlatform = "instagram" | "youtube" | "website";
+
+export interface TripVideo {
+  id: string;
+  platform: VideoPlatform;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+}
+
 export interface Trip {
   id: string;
   slug: string;
@@ -103,6 +113,9 @@ export interface Trip {
   days: TripDay[];
   createdAt: string;
   publishedAt: string | null;
+  /** Season or month the creator actually traveled, shown on public profiles. */
+  seasonLabel?: string;
+  videos?: TripVideo[];
 }
 
 export interface TravelerDetails {

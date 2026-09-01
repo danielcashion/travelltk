@@ -2,6 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/explore/:handle",
+        destination: "/creators/:handle",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     qualities: [75, 95],
     remotePatterns: [
