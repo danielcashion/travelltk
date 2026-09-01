@@ -118,12 +118,7 @@ function loadEnv(): Env {
 
 export const env = loadEnv();
 
-const PRODUCTION_REQUIRED: (keyof Env)[] = [
-  "AUTH_SECRET",
-  "COGNITO_CLIENT_ID",
-  "COGNITO_ISSUER",
-  "NEXT_PUBLIC_API_BASE_URL",
-];
+const PRODUCTION_REQUIRED: (keyof Env)[] = ["AUTH_SECRET"];
 
 const isProductionRuntime =
   env.NODE_ENV === "production" &&

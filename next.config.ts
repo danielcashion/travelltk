@@ -17,12 +17,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.cdninstagram.com",
+        hostname: "**.cdninstagram.com",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "*.fbcdn.net",
+        hostname: "**.fbcdn.net",
         pathname: "/**",
       },
     ],

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, BookmarkCheck, MapPinned, SplitSquareHorizontal, Wallet } from "lucide-react";
+import { ClientErrorBoundary } from "@/components/client-error-boundary";
 import { CategoryTile } from "@/components/marketing/category-tile";
 import { CreatorCarousel } from "@/components/marketing/creator-carousel";
 import { HomeHero } from "@/components/marketing/home-hero";
+import { HomeValueProps } from "@/components/marketing/home-value-props";
 import { PageContainer } from "@/components/marketing/page-container";
 import { Button } from "@/components/ui/button";
 import { TripGrid } from "@/components/trip/trip-grid";
@@ -18,29 +19,6 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const VALUE_PROPS = [
-  {
-    icon: MapPinned,
-    title: "The exact route, not a mood board",
-    body: "Creators publish the trip they actually took — nights, transfers, and the restaurant they would book again — as one product.",
-  },
-  {
-    icon: SplitSquareHorizontal,
-    title: "Book the whole itinerary or a single leg",
-    body: "Take the Paris week, just the cruise, or the Istanbul hotel. Every leg is priced on its own and marked included or optional.",
-  },
-  {
-    icon: Wallet,
-    title: "Creators earn on every booking",
-    body: "A payout lands when a traveler books through a trip. That is the incentive to publish the real logistics, not a highlight reel.",
-  },
-  {
-    icon: BookmarkCheck,
-    title: "Timing is part of the product",
-    body: "Same-day port transfers, rest-day calls, and all-aboard windows are written in. You are not reverse-engineering a caption.",
-  },
-];
-
 export default async function HomePage() {
   const featured = getPublishedTrips().slice(0, 6);
   const creators = await getFeaturedCreators();
@@ -49,7 +27,18 @@ export default async function HomePage() {
   return (
     <main>
       <HomeHero creator={heroCreator} />
-      <CreatorCarousel creators={creators} />
+      <ClientErrorBoundary
+        fallback={
+          <section className="bg-neutral-900 py-16 text-neutral-50">
+            <PageContainer>
+              <h2 className="font-display text-3xl">The creators we travel with</h2>
+              <p className="mt-3 text-neutral-300">Open Instagram from Explore, then book the route on TravelLTK.</p>
+            </PageContainer>
+          </section>
+        }
+      >
+        <CreatorCarousel creators={creators} />
+      </ClientErrorBoundary>
 
       <section className="py-16">
         <PageContainer>
@@ -58,15 +47,7 @@ export default async function HomePage() {
             Screenshots of someone else&apos;s Google Map are not a plan. These trips
             already have the nights, the transfers, and a price.
           </p>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {VALUE_PROPS.map((item) => (
-              <div key={item.title} className="rounded-xl border border-border bg-card p-6">
-                <item.icon className="size-6 text-primary" aria-hidden />
-                <h3 className="mt-4 font-display text-xl">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.body}</p>
-              </div>
-            ))}
-          </div>
+          <HomeValueProps />
         </PageContainer>
       </section>
 
@@ -80,9 +61,7 @@ export default async function HomePage() {
               </p>
             </div>
             <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link href="/explore">
-                See all <ArrowRight className="size-4" />
-              </Link>
+              <Link href="/explore">See all</Link>
             </Button>
           </div>
           <div className="mt-8">

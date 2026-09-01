@@ -27,7 +27,7 @@ TravelLTK is two deployments. **AWS first**, then the Next.js app on Vercel, so 
 
    | Variable | Source |
    | --- | --- |
-   | `NEXT_PUBLIC_APP_URL` | `https://your-domain.vercel.app` or the custom domain |
+   | `NEXT_PUBLIC_APP_URL` | Canonical origin, no trailing slash: `https://www.travelltk.com` |
    | `NEXT_PUBLIC_API_BASE_URL` | CDK `ApiUrl` |
    | `NEXT_PUBLIC_MEDIA_BASE_URL` | CDK `MediaBaseUrl` |
    | `AUTH_SECRET` | `openssl rand -base64 32` |

@@ -2,6 +2,7 @@ import { Figtree, Fraunces, Geist_Mono } from "next/font/google";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { env } from "@/lib/config";
 import "./globals.css";
 
 const figtree = Figtree({
@@ -22,9 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: "TravelLTK — Book the trip, not just the inspiration",
     template: "%s · TravelLTK",
