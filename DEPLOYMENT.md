@@ -43,7 +43,7 @@ TravelLTK is two deployments. **AWS first**, then the Next.js app on Vercel, so 
    | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
    | `STRIPE_CONNECT_CLIENT_ID` | Stripe Connect settings |
    | `INSTAGRAM_APP_ID` / `INSTAGRAM_APP_SECRET` | Meta Developer App (Instagram Login) |
-   | `INSTAGRAM_REDIRECT_URI` | `https://YOUR_DOMAIN/api/instagram/callback` |
+   | `INSTAGRAM_REDIRECT_URI` | Production: `https://www.travelltk.com/api/instagram/callback` (must match Meta exactly). Local `.env` may stay on localhost — Vercel production ignores a localhost redirect URI. |
    | `MIN_FOLLOWER_COUNT` | `400000` |
    | `TOKEN_ENCRYPTION_KEY` | `openssl rand -hex 32` (token encryption at rest) |
    | `ADMIN_EMAILS` | Comma-separated emails allowed to manually verify creators |
@@ -52,6 +52,46 @@ TravelLTK is two deployments. **AWS first**, then the Next.js app on Vercel, so 
 8. Point the Stripe webhook at `https://YOUR_DOMAIN/api/webhooks/stripe`.
 9. Redeploy the Vercel project so it picks up env vars. Add the production callback URL to the Cognito app client if you used a preview URL in step 3.
 10. Optional: attach `travelltk.com` as a custom domain in Vercel and add that origin to the HTTP API CORS list in the CDK stack, then redeploy infra.
+
+## Instagram Login redirect on Vercel
+
+The Meta app **Valid OAuth Redirect URI** is the production route:
+
+`https://www.travelltk.com/api/instagram/callback`
+
+That route is `GET /api/instagram/callback` (`app/api/instagram/callback/route.ts`). Instagram Login starts at `GET /api/instagram/auth`. After Meta returns a `code`, this handler exchanges it and redirects the creator back to `/creators/apply`.
+
+Set these Vercel env vars (Production at minimum; Preview if you also test OAuth there):
+
+- `INSTAGRAM_APP_ID` / `INSTAGRAM_APP_SECRET`
+- `INSTAGRAM_REDIRECT_URI=https://www.travelltk.com/api/instagram/callback`
+- `NEXT_PUBLIC_APP_URL=https://www.travelltk.com` (Config, not Secret)
+- `TOKEN_ENCRYPTION_KEY`
+
+In Meta Developer Console, add that exact callback URL. Preview hostnames (`*.vercel.app`) generally cannot be registered as Instagram redirect URIs — test Connect Instagram on `https://www.travelltk.com`.
+
+## Vercel CI (PR from `development` → `main`)
+
+Preview: `.github/workflows/vercel-preview.yml` deploys when a pull request into `main` is opened from `development`.
+
+Production: `.github/workflows/vercel-production.yml` deploys `--prod` on push to `main` (including merge of that PR).
+
+Local / manual:
+
+```bash
+npm run deploy:preview   # vercel pull (preview) → build → deploy --prebuilt
+npm run deploy:prod      # vercel pull (production) → build --prod → deploy --prebuilt --prod
+```
+
+GitHub repository secrets (never commit these):
+
+| Secret | Source |
+| --- | --- |
+| `VERCEL_TOKEN` | [Vercel account tokens](https://vercel.com/account/tokens) |
+| `VERCEL_ORG_ID` | `.vercel/project.json` → `orgId` (after `npx vercel link`) |
+| `VERCEL_PROJECT_ID` | `.vercel/project.json` → `projectId` |
+
+If the Vercel project is also connected to Git with automatic deployments, disable those in the Vercel Git settings so each PR is not deployed twice.
 
 ## Local production build
 
