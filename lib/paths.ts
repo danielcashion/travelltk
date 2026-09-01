@@ -3,7 +3,7 @@ export function tripPath(creatorHandle: string, tripSlug: string): string {
 }
 
 export function creatorPath(handle: string): string {
-  return `/explore/${handle}`;
+  return `/creators/${handle.toLowerCase()}`;
 }
 
 export function destinationPath(destination: string): string {

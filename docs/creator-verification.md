@@ -19,7 +19,11 @@ Long-lived tokens are encrypted at rest with AES-256-GCM (`lib/crypto.ts`) using
 
 `GET /api/cron/refresh-instagram-tokens` (Vercel Cron, daily) refreshes tokens that expire within 7 days (`grant_type=ig_refresh_token`) so follower counts can be re-checked later.
 
-Redirect URI in the Meta app must match `INSTAGRAM_REDIRECT_URI` exactly, e.g. `https://YOUR_DOMAIN/api/instagram/callback`.
+Redirect URI in the Meta app must match production exactly:
+
+`https://www.travelltk.com/api/instagram/callback`
+
+That is `GET /api/instagram/callback` on the Vercel deployment. Local development can keep `INSTAGRAM_REDIRECT_URI=http://localhost:3000/api/instagram/callback` (and register that URI in Meta for local testing). On Vercel production a localhost redirect URI is ignored so a copied `.env` cannot break Login.
 
 ## TikTok (stub — not OAuth yet)
 

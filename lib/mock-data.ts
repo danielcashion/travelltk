@@ -6,6 +6,11 @@
  * below should move to lib/data.ts as routes are touched.
  */
 import { unsplash } from "@/lib/images";
+import {
+  confirmedCreators,
+  confirmedTrips,
+  confirmedUsers,
+} from "@/lib/confirmed-creators";
 import type {
   Booking,
   CreatorProfile,
@@ -306,6 +311,7 @@ const PARIS_CRUISE_ISTANBUL_DAYS: TripDay[] = [
 ];
 
 export const users: User[] = [
+  ...confirmedUsers,
   {
     id: "user-shopper-1",
     email: "jordan@example.com",
@@ -359,6 +365,7 @@ export const users: User[] = [
 ];
 
 export const creators: CreatorProfile[] = [
+  ...confirmedCreators,
   {
     id: "creator-mira",
     userId: "user-creator-mira",
@@ -452,6 +459,7 @@ function simpleDays(
 }
 
 export const trips: Trip[] = [
+  ...confirmedTrips,
   {
     id: "trip-paris-cruise-istanbul",
     slug: "paris-mediterranean-istanbul",
@@ -798,7 +806,8 @@ export function getTripById(id: string): Trip | undefined {
 }
 
 export function getCreatorByHandle(handle: string): CreatorProfile | undefined {
-  return creators.find((creator) => creator.handle === handle);
+  const needle = handle.toLowerCase();
+  return creators.find((creator) => creator.handle.toLowerCase() === needle);
 }
 
 export function getCreatorById(id: string): CreatorProfile | undefined {

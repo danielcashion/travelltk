@@ -1,5 +1,6 @@
 import { env, isInstagramConfigured } from "@/lib/config";
 import { unsplash } from "@/lib/images";
+import { creatorPath } from "@/lib/paths";
 
 export const FEATURED_INSTAGRAM_HANDLE = "eileengu";
 export const FEATURED_INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${FEATURED_INSTAGRAM_HANDLE}/`;
@@ -23,6 +24,7 @@ export interface FeaturedCreator {
   latestPost: InstagramPost | null;
   profilePictureUrl: string | null;
   followersCount: number | null;
+  hasProfile: boolean;
 }
 
 export const FEATURED_CREATORS = [
@@ -32,44 +34,50 @@ export const FEATURED_CREATORS = [
     tagline: "Olympic alpine. Couture fittings. The itinerary after the podium.",
     /** Instagram media id from @eileengu post DcGjfDDGChA (img_index=1). */
     moodImageId: "3965012587151108160_396557061",
+    hasProfile: true,
+  },
+  {
+    name: "Christine Drinan",
+    handle: "galavantingchristine",
+    tagline: "140 countries, a thousand hotels, written so you can book the route.",
+    /** Opening frame from https://www.instagram.com/p/DZ8cOYqh8Cg/ */
+    moodImageId: "christine-dz8c-home",
+    hasProfile: true,
   },
   {
     name: "Leonie Hanne",
     handle: "leoniehanne",
     tagline: "Riviera fashion weeks, and the yacht that follows.",
     moodImageId: "photo-1567899378494-47b22a2ae96a",
+    hasProfile: false,
   },
   {
     name: "Chiara Ferragni",
     handle: "chiaraferragni",
     tagline: "Italian cities, booked in the order she actually moved through them.",
     moodImageId: "photo-1523906834658-6e24ef2386f9",
+    hasProfile: false,
   },
   {
     name: "Camila Coelho",
     handle: "camilacoelho",
     tagline: "Warm-weather suites and the beauty case that travels with them.",
     moodImageId: "photo-1540541338287-41700207dee6",
-  },
-  {
-    name: "Christine Drinan",
-    handle: "galavantingchristine",
-    tagline:
-      "Luxury Hotels, Foodie, Travel Show Host & Founder of Galavante, sharing the world.",
-    /** Instagram media id from @galavantingchristine reel DcuHF4iBvJF (Hotel 1 Place Vendôme). */
-    moodImageId: "3976146711638110789_11155897",
+    hasProfile: false,
   },
   {
     name: "Negin Mirsalehi",
     handle: "negin_mirsalehi",
     tagline: "Garden tables, European seasons, no guesswork.",
     moodImageId: "photo-1490750967868-88aa4486c946",
+    hasProfile: false,
   },
   {
     name: "Sami Slimani",
     handle: "samislimani",
     tagline: "City suites and the reservation already made.",
     moodImageId: "photo-1502602898657-3e91760cbb34",
+    hasProfile: false,
   },
 ] as const;
 
@@ -95,15 +103,13 @@ interface DiscoveryResponse {
 
 let discoveryWarned = false;
 
-function profileUrl(handle: string): string {
-  return `https://www.instagram.com/${handle}/`;
+function creatorMoodImageUrl(moodImageId: string): string {
+  if (moodImageId.startsWith("photo-")) return unsplash(moodImageId);
+  return `/images/creators/${moodImageId}.jpg`;
 }
 
-function creatorMoodImageUrl(moodImageId: string): string {
-  if (moodImageId.startsWith("photo-")) {
-    return unsplash(moodImageId);
-  }
-  return `/images/creators/${moodImageId}.jpg`;
+function profileUrl(handle: string): string {
+  return `https://www.instagram.com/${handle}/`;
 }
 
 function mapPost(
@@ -199,6 +205,7 @@ export async function getFeaturedCreators(): Promise<FeaturedCreator[]> {
     latestPost: discovered[index]?.latestPost ?? null,
     profilePictureUrl: discovered[index]?.profilePictureUrl ?? null,
     followersCount: discovered[index]?.followersCount ?? null,
+    hasProfile: creator.hasProfile,
   }));
 }
 
@@ -207,9 +214,11 @@ export function getHeroCreator(creators: FeaturedCreator[]): FeaturedCreator {
 }
 
 export function getCreatorCoverUrl(creator: FeaturedCreator): string {
+  if (creator.hasProfile) return creator.moodImageUrl;
   return creator.latestPost?.imageUrl ?? creator.moodImageUrl;
 }
 
 export function getCreatorHref(creator: FeaturedCreator): string {
+  if (creator.hasProfile) return creatorPath(creator.handle);
   return creator.latestPost?.permalink ?? creator.profileUrl;
 }

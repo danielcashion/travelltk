@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { resolveInstagramRedirectUri } from "@/lib/instagram-redirect";
 
 /**
  * Single validated environment config for the Next.js app.
@@ -176,10 +177,12 @@ export const isInstagramOAuthConfigured = Boolean(
 );
 
 export function instagramRedirectUri(): string {
-  return (
-    env.INSTAGRAM_REDIRECT_URI ??
-    `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/api/instagram/callback`
-  );
+  return resolveInstagramRedirectUri({
+    configured: env.INSTAGRAM_REDIRECT_URI,
+    appUrl: env.NEXT_PUBLIC_APP_URL,
+    vercelEnv: process.env.VERCEL_ENV,
+    vercelProductionUrl: process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  });
 }
 
 export function adminEmails(): string[] {

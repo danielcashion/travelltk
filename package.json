@@ -11,7 +11,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy:preview": "npx vercel pull --yes --environment=preview && npx vercel build && npx vercel deploy --prebuilt",
+    "deploy:prod": "npx vercel pull --yes --environment=production && npx vercel build --prod && npx vercel deploy --prebuilt --prod"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^6.8.2",

@@ -14,6 +14,14 @@ import { IG_OAUTH_COOKIE, verifyOAuthState } from "@/lib/instagram-oauth-state";
 import { applyInstagramVerification } from "@/lib/instagram-verification";
 import { getOAuthStateSecret, getTokenEncryptionKey } from "@/lib/token-encryption-key";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+/**
+ * Instagram Login Valid OAuth Redirect URI.
+ * Register this exact URL in the Meta app (Instagram → API setup):
+ *   https://www.travelltk.com/api/instagram/callback
+ */
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");

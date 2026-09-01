@@ -10,6 +10,7 @@ export const BRAND_ASSETS = {
 
 export const PRIMARY_NAV = [
   { href: "/explore", label: "Explore" },
+  { href: "/creators", label: "Creators" },
   { href: "/destinations", label: "Destinations" },
   { href: "/creators/apply", label: "Become a Creator" },
   { href: "/partners", label: "For Partners" },
@@ -24,6 +25,7 @@ export const SOCIAL_LINKS = [
 
 export const FOOTER_LEARN_MORE = [
   { href: "/about", label: "About" },
+  { href: "/creators", label: "Creators" },
   { href: "/creators/apply", label: "Become a Creator" },
   { href: "/partners", label: "Partners" },
   { href: "/press", label: "Press" },
