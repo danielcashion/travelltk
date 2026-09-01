@@ -17,18 +17,18 @@ import { PRIMARY_NAV } from "@/lib/constants";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+    <header className="sticky top-0 z-40 border-b border-secondary/25 bg-background/85 backdrop-blur-md">
+      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between px-4">
         <Link href="/" aria-label="TravelLTK home" className="flex shrink-0 items-center">
           <LogoWordmark alt="" priority className="h-8 sm:h-9" />
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {PRIMARY_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[0.7rem] font-medium tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
             >
               {item.label}
             </Link>
@@ -56,7 +56,7 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-base font-medium text-foreground"
+                    className="text-[0.8rem] font-medium tracking-[0.16em] text-foreground uppercase"
                   >
                     {item.label}
                   </Link>

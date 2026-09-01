@@ -50,9 +50,9 @@ const config: Config = {
         "space-16": "128px",
       },
       fontFamily: {
-        sans: ["Figtree", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Fraunces", "ui-serif", "Georgia", "serif"],
-        mono: ["Geist Mono", "ui-monospace", "monospace"],
+        sans: ["var(--font-figtree)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-fraunces)", "ui-serif", "Georgia", "serif"],
+        mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
       colors: {
         background: "var(--background)",
