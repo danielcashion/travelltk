@@ -91,6 +91,8 @@ GitHub repository secrets (never commit these):
 | `VERCEL_ORG_ID` | `.vercel/project.json` → `orgId` (after `npx vercel link`) |
 | `VERCEL_PROJECT_ID` | `.vercel/project.json` → `projectId` |
 
+The GitHub Actions workflows rebuild `.vercel/project.json` from those secrets before `vercel pull` so CI always uses a clean Vercel project link.
+
 If the Vercel project is also connected to Git with automatic deployments, disable those in the Vercel Git settings so each PR is not deployed twice.
 
 ## Local production build
