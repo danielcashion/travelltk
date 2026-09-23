@@ -23,6 +23,7 @@ TravelLTK is two deployments. **AWS first**, then the Next.js app on Vercel, so 
 5. In Google Cloud Console, add the Cognito Hosted UI redirect:
    `https://{CognitoDomain}/oauth2/idpresponse`
 6. Connect this Git repository to Vercel (Import Project → Next.js). Vercel detects Next.js; no `vercel.json` is required.
+   Configure the project to use Node.js 24 so Vercel matches the repository engine requirement.
 7. Set Vercel environment variables (Production, Preview, Development as appropriate):
 
    | Variable | Source |
