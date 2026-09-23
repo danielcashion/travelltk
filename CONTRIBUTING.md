@@ -4,7 +4,7 @@ Thanks for helping build TravelLTK. This document covers the branch and pull-req
 
 ## Prerequisites
 
-- Node.js 20+ (Node 24 is fine)
+- Node.js 24.x
 - npm 10+
 - A copied `.env.local` based on `.env.example`
 
