@@ -7,7 +7,7 @@ and a private S3 bucket in front of CloudFront for creator media.
 ## Prerequisites
 
 - AWS CLI credentials (`aws configure` or environment variables)
-- Node.js 20+
+- Node.js 24.x
 - A Google Cloud OAuth 2.0 **Web** client (APIs & Services → Credentials)
   with authorized redirect URI:
 
