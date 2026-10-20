@@ -14,13 +14,24 @@ import { pageMetadata } from "@/lib/seo";
 import { TRIP_CATEGORIES } from "@/types";
 
 export const metadata = pageMetadata({
-  title: "Book the trip, not just the inspiration",
-  description:
-    "Luxury itineraries from the creators you already follow. Browse Eileen Gu, Christine Drinan, and others, then book the whole route — or the legs you want.",
+  title: "Welcome to TravelLTK",
+  description: "Welcome to TravelLTK. More to come soon.",
   path: "/",
 });
 
+const showTemporaryHomepage = true;
+
 export default async function HomePage() {
+  if (showTemporaryHomepage) {
+    return (
+      <main className="flex flex-1 items-center justify-center px-6 py-24 text-center">
+        <h1 className="font-display text-3xl md:text-4xl">
+          Welcome to TravelLTK. More to come soon.
+        </h1>
+      </main>
+    );
+  }
+
   const featured = getPublishedTrips().slice(0, 6);
   const creators = await getFeaturedCreators();
   const heroCreator = getHeroCreator(creators);
