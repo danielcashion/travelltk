@@ -1,0 +1,33 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "copilot/fix-failing-github-actions-job",
+    "copilot/fix-production-job-failure",
+    "copilot/node-version-investigation",
+    "copilot/placeholder-new-homepage",
+    "copilot/vercel-deployment-failure-check",
+    "development",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "copilot/fix-failing-github-actions-job": "main",
+    "copilot/fix-production-job-failure": "main",
+    "copilot/node-version-investigation": "main",
+    "copilot/placeholder-new-homepage": "main",
+    "copilot/vercel-deployment-failure-check": "main",
+    "development": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "copilot/fix-failing-github-actions-job",
+    "copilot/fix-production-job-failure",
+    "copilot/node-version-investigation",
+    "copilot/placeholder-new-homepage",
+    "copilot/vercel-deployment-failure-check",
+    "development",
+    "origin"
+  ]
+}
