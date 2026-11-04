@@ -1,0 +1,144 @@
+name: PolinRider guard
+
+# Dependency-free. Scans the tree with grep/find only and never installs
+# packages or executes repository code (including api.js and config files).
+# This workflow file is excluded from its own content checks.
+#
+# Size ceilings: postcss, babel, metro, and eslint configs fail above 2KB.
+# tailwind.config.ts in this repo is a legitimate design-token file (~4KB),
+# so its ceiling is 8KB — still far below observed payload sizes (~20KB).
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Scan for PolinRider payloads
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+
+          check() {
+            local desc="$1"
+            shift
+            local hits
+            hits=$("$@" || true)
+            if [[ -n "${hits}" ]]; then
+              while IFS= read -r line; do
+                [[ -z "${line}" ]] && continue
+                echo "FAIL: ${desc}: ${line}"
+                fail=1
+              done <<< "${hits}"
+            fi
+          }
+
+          GX=(--exclude-dir=.git --exclude=polinrider-guard.yml)
+
+          check "known marker" \
+            grep -RIlI "${GX[@]}" -F \
+              -e 'A8-5593' \
+              -e 'A8-2350-2' \
+              -e 'A8-API' \
+              -e 'A8-2019' \
+              -e 'A8-2750' \
+              -e '-2616-2' \
+              -e '8-2019' \
+              .
+
+          check "var z marker assignment" \
+            grep -RIlI "${GX[@]}" -E \
+              "var[[:space:]]+z[[:space:]]*=[[:space:]]*'[^']+'" \
+              .
+
+          check "long whitespace before code" \
+            grep -RIlI "${GX[@]}" -E \
+              --include='*.js' --include='*.cjs' --include='*.mjs' --include='*.ts' \
+              --include='*.tsx' --include='*.jsx' --include='*.mts' --include='*.cts' \
+              '[[:space:]]{50,}[^[:space:]]' \
+              .
+
+          check "global,require loader" \
+            grep -RIlI "${GX[@]}" -E \
+              '\}\([[:space:]]*global[[:space:]]*,[[:space:]]*require[[:space:]]*\)' \
+              .
+
+          check "global[ obfuscation" \
+            grep -RIlI "${GX[@]}" -F -e 'global[' \
+              .
+
+          check "run() payload trailer" \
+            grep -RIlI "${GX[@]}" -F -e '}run();' \
+              .
+
+          check "node api.js script hook" \
+            grep -RIlI --exclude-dir=.git --include='package.json' -E \
+              'node (\./|backend/)?api\.js' \
+              .
+
+          check "folderOpen task" \
+            grep -RIlI "${GX[@]}" -F -e 'folderOpen' \
+              --include='tasks.json' --include='*.code-workspace' \
+              .
+
+          if [[ -d .vscode ]]; then
+            check "folderOpen under .vscode" \
+              grep -RIlI -F -e 'folderOpen' .vscode
+          fi
+
+          if [[ -f .gitignore ]]; then
+            gi=$(grep -nE '(^|[[:space:]])(branch_structure\.json|temp_auto_push\.bat|temp_interactive_push\.bat|config\.bat)[[:space:]]*$' .gitignore || true)
+            if [[ -n "${gi}" ]]; then
+              echo "FAIL: gitignore drop-file name"
+              echo "${gi}"
+              fail=1
+            fi
+          fi
+
+          while IFS= read -r -d '' f; do
+            base=$(basename "${f}")
+            case "${base}" in
+              branch_structure.json|temp_auto_push.bat|temp_interactive_push.bat|config.bat)
+                echo "FAIL: drop file present: ${f}"
+                fail=1
+                ;;
+            esac
+          done < <(find . -type f ! -path './.git/*' -print0)
+
+          while IFS= read -r -d '' f; do
+            base=$(basename "${f}")
+            limit=2048
+            case "${base}" in
+              tailwind.config.*) limit=8192 ;;
+            esac
+            size=$(wc -c < "${f}")
+            size=${size//[[:space:]]/}
+            if (( size > limit )); then
+              echo "FAIL: oversized config ${f} (${size} bytes > ${limit})"
+              fail=1
+            fi
+          done < <(find . -type f ! -path './.git/*' \( \
+            -name 'postcss.config.*' -o \
+            -name 'babel.config.*' -o \
+            -name 'tailwind.config.*' -o \
+            -name 'metro.config.*' -o \
+            -name 'eslint.config.*' -o \
+            -name '.eslintrc' -o \
+            -name '.eslintrc.*' \
+          \) -print0)
+
+          if (( fail != 0 )); then
+            echo "PolinRider guard: infected content detected"
+            exit 1
+          fi
+          echo "PolinRider guard: clean"
